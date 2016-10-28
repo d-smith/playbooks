@@ -4,7 +4,6 @@
 #          -e "user=<uesr to add to docker group> proxy=<http proxy url>"
 #          --limit <host to install on>
 #
-# Note: you must customize the http-proxy.conf file to reflect your setup.
 ---
 - hosts: all
   become: True
@@ -34,7 +33,7 @@
       file: path=/etc/systemd/system/docker.service.d state=directory
 
     - name: Copy docker proxy config to server
-      copy: src=http-proxy.conf dest=/etc/systemd/system/docker.service.d/http-proxy.conf
+      template: src=http-proxy.conf dest=/etc/systemd/system/docker.service.d/http-proxy.conf
 
     - service: state=started name=docker
 
