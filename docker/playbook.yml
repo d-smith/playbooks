@@ -1,0 +1,42 @@
+# Install latest docker on RHEL 7.1 
+#
+# Usage: ansible-playbook playbook.yml -u <remote user> -k 
+#          -e "user=<uesr to add to docker group> proxy=<http proxy url>"
+#          --limit <host to install on>
+#
+# Note: you must customize the http-proxy.conf file to reflect your setup.
+---
+- hosts: all
+  become: True
+  become_user: root
+
+  environment:
+    http_proxy: "{{ proxy }}"
+    https_proxy:  "{{ proxy }}"
+
+  tasks:
+    - name: Yum Update
+      yum: name=* state=latest
+
+    - name: Install docker yum repo
+      yum_repository:
+        name: docker
+        description: Official docker yum repo
+        baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+        gpgcheck: yes
+        gpgkey: https://yum.dockerproject.org/gpg
+        proxy:  "{{ proxy }}"
+    
+    - name: Install docker
+      yum: name=docker-engine enablerepo=docker state=latest 
+
+    - name: Create directory for docker proxy config
+      file: path=/etc/systemd/system/docker.service.d state=directory
+
+    - name: Copy docker proxy config to server
+      copy: src=http-proxy.conf dest=/etc/systemd/system/docker.service.d/http-proxy.conf
+
+    - service: state=started name=docker
+
+    - name: Add user to docker group
+      user: name={{ user }} groups=docker append=yes
