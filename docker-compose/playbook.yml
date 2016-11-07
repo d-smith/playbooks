@@ -1,0 +1,22 @@
+# Install docker compose on RHEL 7.1 
+#
+# Usage: ansible-playbook playbook.yml -u <remote user> -k 
+#          -e "proxy=<http proxy url>"
+#          --limit <host to install on>
+#
+---
+- hosts: all
+  become: True
+  become_user: root
+
+  environment:
+    http_proxy: "{{ proxy }}"
+    https_proxy:  "{{ proxy }}"
+
+  tasks:
+    - name: install-docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.8.1/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+        dest: /usr/local/bin/docker-compose
+        use_proxy: True
+        mode: 'u+x,g+x'
