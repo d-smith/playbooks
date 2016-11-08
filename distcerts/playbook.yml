@@ -1,3 +1,6 @@
+# Example of how to store certs in a vault then copy them from the
+# vault to the server. Inspired by https://blog.confirm.ch/deploying-ssl-private-keys-with-ansible/
+# To run:
 # ansible-playbook playbook.yml -u <remote user> -k -e "user=<user to own certs> " --limit <host to install on> --ask-vault-pass
 ---
 - hosts: all
@@ -10,7 +13,9 @@
     - name: Create directory for docker proxy config
       file:
         path: "/home/{{ user }}//nginx-certs"
-        state: directory 
+        state: directory
+        owner: '{{ user }}'
+        group: users 
       
     - name: copy ca cert
       copy:
@@ -28,3 +33,28 @@
         group: users
         mode: 0600
       no_log: true
+
+    - name: copy nginxproxy cert
+      copy:
+        content: '{{ nginxproxy_cert }}'
+        dest: '/home/{{ user }}/nginx-certs/nginxproxy.crt'
+        owner: '{{ user }}'
+        group: users
+        mode: 0644
+
+    - name: copy replicator key
+      copy:
+        content: '{{ replicator_key }}'
+        dest: '/home/{{ user }}/nginx-certs/replicator.key'
+        owner: '{{ user }}'
+        group: users
+        mode: 0600
+      no_log: true
+
+    - name: copy replicator cert
+      copy:
+        content: '{{ replicator_cert }}'
+        dest: '/home/{{ user }}/nginx-certs/replicator.crt'
+        owner: '{{ user }}'
+        group: users
+        mode: 0644
