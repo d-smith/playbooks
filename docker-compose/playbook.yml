@@ -19,4 +19,4 @@
         url: https://github.com/docker/compose/releases/download/1.8.1/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
         dest: /usr/local/bin/docker-compose
         use_proxy: True
-        mode: 'u+x,g+x'
+        mode: 0755
