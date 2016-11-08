@@ -19,3 +19,12 @@
         owner: '{{ user }}'
         group: users
         mode: 0644
+
+    - name: copy nginxproxy key
+      copy:
+        content: '{{ nginxproxy_key }}'
+        dest: '/home/{{ user }}/nginx-certs/nginxproxy.key'
+        owner: '{{ user }}'
+        group: users
+        mode: 0600
+      no_log: true
