@@ -1,0 +1,21 @@
+# ansible-playbook playbook.yml -u <remote user> -k -e "user=<user to own certs> " --limit <host to install on> --ask-vault-pass
+---
+- hosts: all
+  become: True
+  become_user: root
+  vars_files:
+    - vars/certificates.yml
+
+  tasks:
+    - name: Create directory for docker proxy config
+      file:
+        path: "/home/{{ user }}//nginx-certs"
+        state: directory 
+      
+    - name: copy ca cert
+      copy:
+        content: '{{ ca_cert }}'
+        dest: '/home/{{ user }}/nginx-certs/ca.crt'
+        owner: '{{ user }}'
+        group: users
+        mode: 0644
