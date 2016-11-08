@@ -14,3 +14,20 @@
       template: 
         src: env 
         dest: "/home/{{ user }}/.env"
+
+    - name: Copy compose file to server
+      copy:
+        src: docker-compose.yml
+        dest: '/home/{{ user }}/docker-compose.yml'
+        owner: '{{ user }}'
+        group: users
+        mode: 0644
+
+    - name: Copy reverse proxy config to server
+      copy:
+        src: rp.conf
+        dest: '/home/{{ user }}/rp.conf'
+        owner: '{{ user }}'
+        group: users
+        mode: 0644
+
