@@ -1,0 +1,16 @@
+#TODO - figure out how to select the right config to inject into the env
+# To run:
+# ansible-playbook playbook.yml -u <remote user> -k -e "user=<user to own certs> " --limit <host to install on>
+
+---
+- hosts: all
+  become: True
+  become_user: root
+  vars_files:
+    - vars/devcenterdev.yml
+  
+  tasks:
+    - name: Copy env config to server
+      template: 
+        src: env 
+        dest: "/home/{{ user }}/.env"

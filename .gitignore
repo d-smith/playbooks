@@ -1,3 +1,5 @@
 distcerts/vars/*.yml
 docker/playbook.retry
 distcerts/playbook.retry
+compose-app/vars/*.yml
+compose-app/playbook.retry
