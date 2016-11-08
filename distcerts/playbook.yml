@@ -10,7 +10,7 @@
     - vars/certificates.yml
 
   tasks:
-    - name: Create directory for docker proxy config
+    - name: Create directory for nginx certs
       file:
         path: "/home/{{ user }}//nginx-certs"
         state: directory
@@ -55,6 +55,38 @@
       copy:
         content: '{{ replicator_cert }}'
         dest: '/home/{{ user }}/nginx-certs/replicator.crt'
+        owner: '{{ user }}'
+        group: users
+        mode: 0644
+
+    - name: Create directory for atompub certs
+      file:
+        path: "/home/{{ user }}//atompubcerts"
+        state: directory
+        owner: '{{ user }}'
+        group: users 
+      
+    - name: copy ca cert
+      copy:
+        content: '{{ ca_cert }}'
+        dest: '/home/{{ user }}/atompubcerts/ca.crt'
+        owner: '{{ user }}'
+        group: users
+        mode: 0644
+
+    - name: copy atomfeedpub key
+      copy:
+        content: '{{ atomfeedpub_key }}'
+        dest: '/home/{{ user }}/atompubcerts/atomfeedpub.key'
+        owner: '{{ user }}'
+        group: users
+        mode: 0600
+      no_log: true
+
+    - name: copy atompub cert
+      copy:
+        content: '{{ atomfeedpub_cert }}'
+        dest: '/home/{{ user }}/atompubcerts/atomfeedpub.crt'
         owner: '{{ user }}'
         group: users
         mode: 0644
