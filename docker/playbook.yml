@@ -35,7 +35,7 @@
     - name: Copy docker proxy config to server
       template: src=http-proxy.conf dest=/etc/systemd/system/docker.service.d/http-proxy.conf
 
-    - service: state=started name=docker
+    - service: state=started name=docker enabled=yes
 
     - name: Add user to docker group
       user: name={{ user }} groups=docker append=yes
