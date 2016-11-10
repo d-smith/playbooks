@@ -1,7 +1,7 @@
 # Example of how to store certs in a vault then copy them from the
 # vault to the server. Inspired by https://blog.confirm.ch/deploying-ssl-private-keys-with-ansible/
 # To run:
-# ansible-playbook playbook.yml -u <remote user> -k -e "user=<user to own certs> " --limit <host to install on> --ask-vault-pass
+# ansible-playbook playbook.yml -u <remote user> -k --limit <host to install on> --ask-vault-pass
 ---
 - hosts: all
   become: True
@@ -10,83 +10,68 @@
     - vars/certificates.yml
 
   tasks:
+    - name: Create docker app directory
+      file:
+        path: "/opt/dockerapps/devcenter"
+        state: directory
+
     - name: Create directory for nginx certs
       file:
-        path: "/home/{{ user }}//nginx-certs"
+        path: "/opt/dockerapps/devcenter/nginx-certs"
         state: directory
-        owner: '{{ user }}'
-        group: users 
       
     - name: copy ca cert
       copy:
         content: '{{ ca_cert }}'
-        dest: '/home/{{ user }}/nginx-certs/ca.crt'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/nginx-certs/ca.crt'
         mode: 0644
 
     - name: copy nginxproxy key
       copy:
         content: '{{ nginxproxy_key }}'
-        dest: '/home/{{ user }}/nginx-certs/nginxproxy.key'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/nginx-certs/nginxproxy.key'
         mode: 0600
       no_log: true
 
     - name: copy nginxproxy cert
       copy:
         content: '{{ nginxproxy_cert }}'
-        dest: '/home/{{ user }}/nginx-certs/nginxproxy.crt'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/nginx-certs/nginxproxy.crt'
         mode: 0644
 
     - name: copy replicator key
       copy:
         content: '{{ replicator_key }}'
-        dest: '/home/{{ user }}/nginx-certs/replicator.key'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/nginx-certs/replicator.key'
         mode: 0600
       no_log: true
 
     - name: copy replicator cert
       copy:
         content: '{{ replicator_cert }}'
-        dest: '/home/{{ user }}/nginx-certs/replicator.crt'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/nginx-certs/replicator.crt'
         mode: 0644
 
     - name: Create directory for atompub certs
       file:
-        path: "/home/{{ user }}//atompubcerts"
+        path: "/opt/dockerapps/devcenter/atompubcerts"
         state: directory
-        owner: '{{ user }}'
-        group: users 
       
     - name: copy ca cert
       copy:
         content: '{{ ca_cert }}'
-        dest: '/home/{{ user }}/atompubcerts/ca.crt'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/atompubcerts/ca.crt'
         mode: 0644
 
     - name: copy atomfeedpub key
       copy:
         content: '{{ atomfeedpub_key }}'
-        dest: '/home/{{ user }}/atompubcerts/atomfeedpub.key'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/atompubcerts/atomfeedpub.key'
         mode: 0600
       no_log: true
 
     - name: copy atompub cert
       copy:
         content: '{{ atomfeedpub_cert }}'
-        dest: '/home/{{ user }}/atompubcerts/atomfeedpub.crt'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/atompubcerts/atomfeedpub.crt'
         mode: 0644
