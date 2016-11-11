@@ -1,6 +1,6 @@
 #TODO - figure out how to select the right config to inject into the env
 # To run:
-# ansible-playbook playbook.yml -u <remote user> -k -e "user=<user to own certs> " --limit <host to install on>
+# ansible-playbook playbook.yml -u <remote user> -k  --limit <host to install on>
 
 ---
 - hosts: all
@@ -13,21 +13,34 @@
     - name: Copy env config to server
       template: 
         src: env 
-        dest: "/home/{{ user }}/.env"
+        dest: "/opt/dockerapps/devcenter/.env"
 
     - name: Copy compose file to server
       copy:
         src: docker-compose.yml
-        dest: '/home/{{ user }}/docker-compose.yml'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/docker-compose.yml'
         mode: 0644
 
     - name: Copy reverse proxy config to server
       copy:
         src: rp.conf
-        dest: '/home/{{ user }}/rp.conf'
-        owner: '{{ user }}'
-        group: users
+        dest: '/opt/dockerapps/devcenter/rp.conf'
         mode: 0644
+    
+    - name: Copy atomfeedpub unit file
+      copy:
+        src: atomfeedpub.service
+        dest: '/etc/systemd/system/atomfeedpub.service'
+
+    - name: Copy nginxproxy unit file
+      copy:
+        src: nginxproxy.service
+        dest: '/etc/systemd/system/nginxproxy.service'
+
+    - name: Create and start atomfeedpub service
+      service: state=started name=atomfeedpub enabled=yes
+
+    - name: Create and start nginxproxy service
+      service: state=started name=nginxproxy enabled=yes
+
 
