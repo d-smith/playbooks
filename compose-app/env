@@ -8,3 +8,6 @@ DB_SVC={{ db_svc }}
 PRIVATE_KEY=/certs/atomfeedpub.key
 CERTIFICATE=/certs/atomfeedpub.crt
 CACERT=/certs/ca.crt
+SUMO_HTTP_TOKEN={{ sumo_http_token }}
+HTTP_PROXY={{ http_proxy }}
+STATSD_ENDPOINT=syslog:514
