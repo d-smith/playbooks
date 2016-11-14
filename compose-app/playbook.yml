@@ -37,6 +37,22 @@
         src: nginxproxy.service
         dest: '/etc/systemd/system/nginxproxy.service'
 
+    - name: Copy syslog unit file
+      copy:
+        src: syslog.service
+        dest: '/etc/systemd/system/syslog.service'
+
+    - name: Copy logspout unit file
+      copy:
+        src: logspout.service
+        dest: '/etc/systemd/system/logspout.service'
+
+    - name: Create and start syslog service
+      service: state=started name=syslog enabled=yes
+      
+    - name: Create and start logspout service
+      service: state=started name=logspout enabled=yes
+
     - name: Create and start atomfeedpub service
       service: state=started name=atomfeedpub enabled=yes
 
