@@ -1,0 +1,29 @@
+# Install envconsul on RHEL 7.1 
+#
+# Usage: ansible-playbook playbook.yml -u <remote user> -k 
+#          -e "proxy=<http proxy url>"
+#          --limit <host to install on>
+#
+---
+- hosts: all
+  become: True
+  become_user: root
+
+  environment:
+    http_proxy: "{{ proxy }}"
+    https_proxy:  "{{ proxy }}"
+
+  tasks:
+# TODO - upgrade to ansible 2.2 and pull the file remotely  
+#    - name: install-env-consul
+#      get_url:
+#        url: https://releases.hashicorp.com/envconsul/0.6.1/envconsul_0.6.1_linux_amd64.zip
+#        dest: /tmp/envconsul_0.6.1_linux_amd64.zip
+#        use_proxy: True
+#        mode: 0755
+
+    - name: unzip
+      unarchive: 
+        src: ./envconsul_0.6.1_linux_amd64.zip
+        dest: /usr/bin
+        mode: 0755
