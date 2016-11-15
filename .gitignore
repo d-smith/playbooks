@@ -1,3 +1,4 @@
 distcerts/vars/*.yml
 compose-app/vars/*.yml
 playbook.retry
+envconsul_0.6.1_linux_amd64.zip

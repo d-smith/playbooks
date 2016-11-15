@@ -1,7 +1,7 @@
 # Example of how to store certs in a vault then copy them from the
 # vault to the server. Inspired by https://blog.confirm.ch/deploying-ssl-private-keys-with-ansible/
 # To run:
-# ansible-playbook playbook.yml -u <remote user> -k --limit <host to install on> --ask-vault-pass
+# ansible-playbook playbook.yml -u <remote user> --limit <host to install on> --ask-vault-pass
 ---
 - hosts: all
   become: True

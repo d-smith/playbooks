@@ -1,0 +1,28 @@
+
+# ansible-playbook playbook.yml -u <remote user> -e "user=<remote user>" --limit <host to install on>
+#
+# Note: to run this you need to have docker-py installed on the remote
+#       host
+---
+- hosts: all
+  remote_user: "{{ user }}"
+
+# Later for private repo  
+# - name: Add docker credentials for ubuntu user
+#    copy: src=docker/dockercfg.json dest=/root/.dockercfg
+
+  tasks:
+
+    - name: pull logspout image
+      shell: docker pull raychaser/logspout-http:latest
+
+    - name: pull syslog image
+      shell: docker pull factorish/syslog
+
+    - name: pull atomfeedpub image
+      shell: docker pull xtracdev/atompub
+
+    - name: pull nginxproxy image
+      shell: docker pull xtracdev/nginxproxy
+ 
+

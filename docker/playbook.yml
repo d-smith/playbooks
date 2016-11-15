@@ -1,6 +1,6 @@
 # Install latest docker on RHEL 7.1 
 #
-# Usage: ansible-playbook playbook.yml -u <remote user> -k 
+# Usage: ansible-playbook playbook.yml -u <remote user> 
 #          -e "user=<user to add to docker group> proxy=<http proxy url> noproxy_domain=<domain to not proxy>"
 #          --limit <host to install on>
 #
