@@ -1,6 +1,6 @@
 # Install envconsul on RHEL 7.1 
 #
-# Usage: ansible-playbook playbook.yml -u <remote user> -k 
+# Usage: ansible-playbook playbook.yml -u <remote user>
 #          -e "proxy=<http proxy url>"
 #          --limit <host to install on>
 #
