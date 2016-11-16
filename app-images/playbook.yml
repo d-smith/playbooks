@@ -1,8 +1,7 @@
 
 # ansible-playbook playbook.yml -u <remote user> -e "user=<remote user>" --limit <host to install on>
 #
-# Note: to run this you need to have docker-py installed on the remote
-#       host
+
 ---
 - hosts: all
   remote_user: "{{ user }}"

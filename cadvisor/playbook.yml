@@ -1,0 +1,19 @@
+# ansible-playbook playbook.yml -u <remote user>  --limit <host to install on>
+#
+---
+- hosts: all
+  become: True
+  become_user: root
+  
+  tasks:
+
+    - name: pull cadvisor image
+      shell: docker pull google/cadvisor:latest
+
+    - name: Copy cadvisor.service config to server
+      copy:
+        src: cadvisor.service
+        dest: '/etc/systemd/system/cadvisor.service'
+
+    - name: Create and start cadvisor service
+      service: state=started name=cadvisor enabled=yes     
