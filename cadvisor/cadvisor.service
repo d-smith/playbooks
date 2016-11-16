@@ -1,0 +1,26 @@
+[Unit]
+Description=CAdvisor Service
+After=docker.service
+BindsTo=docker.service
+Conflicts=shutdown.target reboot.target halt.target
+
+[Service]
+Environment=APP='google/cadvisor'
+TimeoutStartSec=0
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
+ 
+WorkingDirectory=/opt/dockerapps
+ 
+ExecStartPre=-/usr/bin/docker kill $APP
+ExecStartPre=-/usr/bin/docker-compose rm $APP
+ExecStartPre=-/usr/bin/docker rm -f $APP
+ExecStart=/usr/bin/docker run --volume=/:/rootfs:ro --volume=/var/run:/var/run:rw --volume=/sys:/sys:ro --volume=/var/lib/docker/:/var/lib/docker:ro --publish=8080:8080 --detach=true --name=cadvisor google/cadvisor:latest
+ 
+ExecStop=/usr/local/bin/docker-compose stop $APP
+
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
