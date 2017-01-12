@@ -1,0 +1,4 @@
+---
+required_vars:
+  - myvar1
+  - myvar2

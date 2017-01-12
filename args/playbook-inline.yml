@@ -1,0 +1,10 @@
+---
+- hosts: myhosts
+  tasks:
+    - fail: msg="Variable '{{ item }}' is not defined"
+      when: item not in vars
+      with_items:
+        - my_var_1
+        - my_var_2
+
+

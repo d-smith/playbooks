@@ -1,0 +1,8 @@
+---
+- hosts: myhosts
+  vars_files:
+    - ./required_vars.yml
+  tasks:
+    - fail: msg="Variable '{{ item }}' is not defined"
+      when: item not in hostvars[inventory_hostname]
+      with_items: '{{ required_vars }}'
